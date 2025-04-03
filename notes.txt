@@ -1,0 +1,39 @@
+To Run, execute the following command in the terminal (cd down to WebRestAPI folder)
+
+	dotnet watch -lp https
+
+To use Oracle, use the following commands:
+	dotnet add package Oracle.EntityFrameworkCore --version 8.23.70
+	dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.14
+
+To Scaffold your project, CD down to WebRestEF project, run the following command:
+
+	dotnet ef dbcontext scaffold "Data Source=<IP ADDRESS>:<PORT>/<SERVICE_NAME>;User ID=<USER_ID>;Password=<PASSWORD>" Oracle.EntityFrameworkCore --namespace WebRestEF.EF.Models --context-namespace WebRestEF.EF.Data --output-dir Models --context-dir Data --context "WebRestOracleContext" --data-annotations --no-onconfiguring --force
+
+Adjust your appsettings.config:
+
+appsettings.json:
+{
+  "ConnectionStrings": {   
+    "WebRestOracleConnection": "Data Source=<IP ADDRESS>:<PORT>/<SERVICE_NAME>;User ID=<USER_ID>;Password=<PASSWORD>;Connection Timeout=60;Connection Lifetime=10;Max Pool Size=2;Min Pool Size=0;Pooling=false;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+
+Add this to program.cs: 	
+
+var connectionString = builder.Configuration.GetConnectionString("WebRestOracleConnection");
+builder.Services.AddDbContext<EaglesOracleContext>
+    (options => options.UseOracle(connectionString)
+    .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
+    );
+
+
+
