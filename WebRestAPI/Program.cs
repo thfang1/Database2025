@@ -1,22 +1,23 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 // DO NOT FORGET TO UNCOMMENT THIS LINE
-//using WebRest.EF.Data;
+using WebRest.EF.Data;
 using WebRestAPI.Code;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 var connectionString = builder.Configuration.GetConnectionString("WebRestOracleConnection");
-/*
+
 // DO NOT FORGET TO UNCOMMENT THIS LINE
 
 builder.Services.AddDbContext<WebRestOracleContext>
     (options => options.UseOracle(connectionString)
     .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
     );
-*/
+
 
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>
